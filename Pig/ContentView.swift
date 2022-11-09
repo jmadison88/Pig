@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+@State private var turnScore = 0
+@State private var gameScore = 0
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack {
+            Color.gray.opacity(0.7).ignoresSafeArea()
+            VStack {
+                Image("Pig").resizable().frame(width: 150, height: 150)
+                Text("Pig")
+                Spacer()
+            }
         }
-        .padding()
     }
 }
 
