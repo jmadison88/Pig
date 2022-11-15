@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var gameScore = 0
     @State private var randomValue = 0
     @State private var rotation = 0.0
+    @State private var gameOver = false
     var body: some View {
         NavigationView {
             ZStack {
@@ -40,6 +41,9 @@ struct ContentView: View {
                             withAnimation(.easeInOut(duration: 1)) {
                                 rotation += 360
                             }
+                            if gameScore >= 100 {
+                                gameOver = true
+                            }
                         }
                         .buttonStyle(CustomButtonStyle())
                     }
@@ -50,6 +54,14 @@ struct ContentView: View {
                     Spacer()
                 }
             }
+            .alert(isPresented: $gameOver, content: {
+                Alert(title: Text("You won the game!"), dismissButton: .destructive(Text("Play again"), action: {
+                    withAnimation(Animation.default) {
+                        gameScore = 0
+                        gameOver = false
+                    }
+                }))
+            })
         }
     }
     func endTurn() {
@@ -103,7 +115,7 @@ struct InstructionsView: View {
                 Image("Pig").resizable().frame(width: 150, height: 150)
                 Text("Pig").font(.title)
                 VStack (alignment: .leading){
-                    Text("In the game of Pig, players take individual tunrs. Each turn, a player repeatedly rolls a single die until either a pig is rolled or the player decided to \"hold\".")
+                    Text("In the game of Pig, players take individual turns. Each turn, a player repeatedly rolls a single die until either a pig is rolled or the player decided to \"hold\".")
                         .padding()
                     Text("If the player rolls a pig, they score nothing, and it becomes the next player's turn.")
                         .padding()
@@ -111,7 +123,7 @@ struct InstructionsView: View {
                         .padding()
                     Text("If a player chooses to \"hold\", their turn total is added to their game score, and it becomes the next player's turn.")
                         .padding()
-                    Text("A player wins the game when the game score becomes 100 or more on their turn")
+                    Text("A player wins the game when the game score becomes 100 or more on their turn.")
                         .padding()
                 }
                 Spacer()
